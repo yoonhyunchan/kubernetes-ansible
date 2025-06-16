@@ -1,0 +1,2 @@
+- name: yum update cache
+  command: yum makecache

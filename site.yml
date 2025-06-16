@@ -1,0 +1,35 @@
+# - name : setup k8s
+#   hosts: kubernetes
+#   become: true
+#   roles:
+#     - setup_k8s
+
+# - name : kubeadm init controller node
+#   hosts: k8s_controller
+#   become: true
+#   roles:
+#     - kubeadm_init
+
+# - name : kubeadm join compute node
+#   hosts: k8s_compute
+#   become: true
+#   roles:
+#     - kubeadm_join
+
+# - name : copy admin.conf mgmt
+#   hosts: localhost
+#   become: true
+#   roles:
+#     - privision_admin
+
+# - name : helm installation
+#   hosts: mgmt
+#   become: true
+#   roles:
+#     - helm_install
+
+- name : helm add-ons
+  hosts: mgmt
+  become: true
+  roles:
+    - helm_addons

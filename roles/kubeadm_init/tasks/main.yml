@@ -1,0 +1,35 @@
+- name: Generate kubeadm init configuration
+  template:
+    src: ../templates/init-config.yaml.j2
+    dest: /etc/kubernetes/init-config.yaml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Initialize Kubernetes with kubeadm
+  command: kubeadm init --config /etc/kubernetes/init-config.yaml
+  args:
+    creates: /etc/kubernetes/admin.conf
+
+- name: Set KUBECONFIG environment variable in .bashrc
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: 'export KUBECONFIG=/etc/kubernetes/admin.conf'
+    state: present
+
+- name: Get kubeadm join command with token and hash
+  command: kubeadm token create --print-join-command
+  register: join_command
+  changed_when: false
+
+- name: Set controller IP fact
+  set_fact:
+    controller_ip: "{{ ansible_default_ipv4.address }}"
+
+- name: Extract bootstrap token
+  set_fact:
+    bootstrap_token: "{{ (join_command.stdout | regex_search('--token [^\\s]+')) | regex_replace('--token ', '') }}"
+
+- name: Extract ca_cert_hash
+  set_fact:
+    ca_cert_hash: "{{ (join_command.stdout | regex_search('--discovery-token-ca-cert-hash sha256:[^\\s]+')) | regex_replace('--discovery-token-ca-cert-hash ', '') }}"

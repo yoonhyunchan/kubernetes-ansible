@@ -1,0 +1,64 @@
+- name: Add projectcalico Helm repo
+  kubernetes.core.helm_repository:
+    name: projectcalico
+    repo_url: https://docs.tigera.io/calico/charts
+    state: present
+
+- name: Install Calico tigera-operator with custom values
+  kubernetes.core.helm:
+    name: calico
+    chart_ref: projectcalico/tigera-operator
+    namespace: tigera-operator
+    create_namespace: true
+    values:
+      installation:
+        calicoNetwork:
+          bgp: Disabled
+          ipPools:
+            - blockSize: 26
+              cidr: 192.168.0.0/16
+              encapsulation: VXLAN
+              natOutgoing: Enabled
+              nodeSelector: all()
+    state: present
+    wait: true
+
+- name: Add aws-cloud-controller-manager Helm repo
+  kubernetes.core.helm_repository:
+    name: aws-cloud-controller-manager
+    repo_url: https://kubernetes.github.io/cloud-provider-aws
+    state: present
+    
+
+- name: Install or upgrade aws-cloud-controller-manager
+  kubernetes.core.helm:
+    name: aws-cloud-controller-manager
+    chart_ref: aws-cloud-controller-manager/aws-cloud-controller-manager
+    namespace: kube-system
+    set_values:
+      - value: "--cluster-cidr=192.168.0.0/16"
+      - value: "--cloud-provider=aws"
+      - value: clusterName=kubernetes
+      - value: cloud-provider=external
+    state: present
+    wait: true
+
+- name: Add eks Helm repo
+  kubernetes.core.helm_repository:
+    name: eks
+    repo_url: https://aws.github.io/eks-charts
+    state: present
+
+- name: Install AWS Load Balancer Controller via Helm
+  kubernetes.core.helm:
+    name: aws-load-balancer-controller
+    chart_ref: eks/aws-load-balancer-controller
+    release_namespace: kube-system
+    create_namespace: false  # 이미 kube-system이 존재한다고 가정
+    wait: true
+    set_values:
+      - value: clusterName=kubernetes
+      - value: region=us-west-2
+      - value: vpcId=vpc-034054ac0cfd93aca
+
+

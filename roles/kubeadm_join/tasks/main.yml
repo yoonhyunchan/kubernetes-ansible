@@ -1,0 +1,24 @@
+- name: Show bootstrap token from controller
+  debug:
+    msg: "{{ hostvars['controller.chanandy.internal'].bootstrap_token }}"
+
+- name: Show CA cert hash from controller
+  debug:
+    msg: "{{ hostvars['controller.chanandy.internal'].ca_cert_hash }}"
+
+- set_fact:
+    controller_ip: "{{ hostvars['controller.chanandy.internal'].controller_ip }}"
+    bootstrap_token: "{{ hostvars['controller.chanandy.internal'].bootstrap_token }}"
+    ca_cert_hash: "{{ hostvars['controller.chanandy.internal'].ca_cert_hash }}"
+
+
+- name: Generate kubeadm join configuration
+  template:
+    src: join-config.yaml.j2
+    dest: /etc/kubernetes/join-config.yaml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Initialize Kubernetes with kubeadm
+  command: kubeadm join --config /etc/kubernetes/join-config.yaml

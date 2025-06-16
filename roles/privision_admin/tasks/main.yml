@@ -1,0 +1,45 @@
+- name: Set Kubernetes yum repo
+  copy:
+    dest: /etc/yum.repos.d/kubernetes.repo
+    content: |
+      [kubernetes]
+      name=Kubernetes
+      baseurl=https://pkgs.k8s.io/core:/stable:/{{ kubernetes_version }}/rpm/
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://pkgs.k8s.io/core:/stable:/{{ kubernetes_version }}/rpm/repodata/repomd.xml.key
+
+- name: Install kubectl
+  dnf:
+    name:
+      - kubectl
+    state: present
+
+- name: Fetch admin.conf from controller node
+  ansible.builtin.fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: /tmp/admin.conf
+    flat: true
+  delegate_to: controller.chanandy.internal  # 실제 컨트롤러 호스트명 또는 인벤토리 그룹명으로 변경하세요.
+
+- name: Ensure /root/.kube directory exists
+  file:
+    path: /root/.kube
+    state: directory
+    mode: '0700'
+
+- name: Copy admin.conf to /root/.kube/config
+  copy:
+    src: /tmp/admin.conf
+    dest: /root/.kube/config
+    remote_src: yes
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Add KUBECONFIG environment variable to root's .bashrc if not present
+  lineinfile:
+    path: /root/.bashrc
+    line: 'export KUBECONFIG=/root/.kube/config'
+    state: present
+    create: yes
