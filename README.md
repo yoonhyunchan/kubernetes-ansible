@@ -1,5 +1,5 @@
 # ansible-k8s-cluster
-'''bash
+```bash
 .
 ├── README.md
 ├── ansible.cfg
@@ -37,4 +37,4 @@
 │       └── vars
 │           └── main.yml
 └── site.yml
-'''
+```
