@@ -20,7 +20,7 @@
     src: /etc/kubernetes/admin.conf
     dest: /tmp/admin.conf
     flat: true
-  delegate_to: controller.chanandy.internal  # 실제 컨트롤러 호스트명 또는 인벤토리 그룹명으로 변경하세요.
+  delegate_to: "{{ groups['k8s_controller'][0] }}"
 
 - name: Ensure /root/.kube directory exists
   file:

@@ -1,0 +1,5 @@
+- name : helm add-ons
+  hosts: mgmt
+  become: true
+  roles:
+    - helm_addons

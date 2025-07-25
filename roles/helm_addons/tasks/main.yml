@@ -59,6 +59,6 @@
     set_values:
       - value: clusterName=kubernetes
       - value: region=us-west-2
-      - value: vpcId=vpc-034054ac0cfd93aca
+      - value: vpcId=vpc-0d808047bba1f4001
 
 

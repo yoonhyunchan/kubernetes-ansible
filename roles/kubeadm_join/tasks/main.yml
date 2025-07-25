@@ -1,16 +1,15 @@
 - name: Show bootstrap token from controller
   debug:
-    msg: "{{ hostvars['controller.chanandy.internal'].bootstrap_token }}"
+    msg: "{{ hostvars[groups['k8s_controller'][0]].bootstrap_token }}"
 
 - name: Show CA cert hash from controller
   debug:
-    msg: "{{ hostvars['controller.chanandy.internal'].ca_cert_hash }}"
+    msg: "{{ hostvars[groups['k8s_controller'][0]].ca_cert_hash }}"
 
 - set_fact:
-    controller_ip: "{{ hostvars['controller.chanandy.internal'].controller_ip }}"
-    bootstrap_token: "{{ hostvars['controller.chanandy.internal'].bootstrap_token }}"
-    ca_cert_hash: "{{ hostvars['controller.chanandy.internal'].ca_cert_hash }}"
-
+    controller_ip: "{{ hostvars[groups['k8s_controller'][0]].controller_ip }}"
+    bootstrap_token: "{{ hostvars[groups['k8s_controller'][0]].bootstrap_token }}"
+    ca_cert_hash: "{{ hostvars[groups['k8s_controller'][0]].ca_cert_hash }}"
 
 - name: Generate kubeadm join configuration
   template:
