@@ -1,10 +1,10 @@
-- name: Show bootstrap token from controller
-  debug:
-    msg: "{{ hostvars[groups['k8s_controller'][0]].bootstrap_token }}"
+# - name: Show bootstrap token from controller
+#   debug:
+#     msg: "{{ hostvars[groups['k8s_controller'][0]].bootstrap_token }}"
 
-- name: Show CA cert hash from controller
-  debug:
-    msg: "{{ hostvars[groups['k8s_controller'][0]].ca_cert_hash }}"
+# - name: Show CA cert hash from controller
+#   debug:
+#     msg: "{{ hostvars[groups['k8s_controller'][0]].ca_cert_hash }}"
 
 - set_fact:
     controller_ip: "{{ hostvars[groups['k8s_controller'][0]].controller_ip }}"
