@@ -15,27 +15,47 @@
       - kubectl
     state: present
 
-- name: Fetch admin.conf from controller node
-  ansible.builtin.fetch:
+# - name: Fetch admin.conf from controller node
+#   ansible.builtin.fetch:
+#     src: /etc/kubernetes/admin.conf
+#     dest: /tmp/admin.conf
+#     flat: true
+#   delegate_to: "{{ groups['k8s_controller'][0] }}"
+
+# - name: Ensure /root/.kube directory exists
+#   file:
+#     path: /root/.kube
+#     state: directory
+#     mode: '0700'
+
+# - name: Copy admin.conf to /root/.kube/config
+#   copy:
+#     src: /tmp/admin.conf
+#     dest: /root/.kube/config
+#     remote_src: yes
+#     owner: root
+#     group: root
+#     mode: '0600'
+
+- name: Copy admin.conf from controller to mgmt server
+  synchronize:
     src: /etc/kubernetes/admin.conf
-    dest: /tmp/admin.conf
-    flat: true
-  delegate_to: "{{ groups['k8s_controller'][0] }}"
-
-- name: Ensure /root/.kube directory exists
-  file:
-    path: /root/.kube
-    state: directory
-    mode: '0700'
-
-- name: Copy admin.conf to /root/.kube/config
-  copy:
-    src: /tmp/admin.conf
     dest: /root/.kube/config
-    remote_src: yes
+    mode: pull
+    rsync_opts:
+      - "--rsync-path='sudo rsync'"
+  delegate_to: "{{ groups['k8s_controller'][0] }}"
+  run_once: true
+
+- name: Ensure /root/.kube permissions
+  file:
+    path: /root/.kube/config
+    state: file
     owner: root
     group: root
     mode: '0600'
+  delegate_to: "{{ groups['mgmt'][0] }}"
+  run_once: true
 
 - name: Add KUBECONFIG environment variable to root's .bashrc if not present
   lineinfile:

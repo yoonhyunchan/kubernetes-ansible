@@ -17,7 +17,7 @@
     - kubeadm_join
 
 - name : copy admin.conf mgmt
-  hosts: localhost
+  hosts: mgmt
   become: true
   roles:
     - privision_admin
