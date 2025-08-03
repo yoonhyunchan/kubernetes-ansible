@@ -1,6 +1,10 @@
+<p align="center">
+    <img src="https://skillicons.dev/icons?i=ansible,kubernetes" />
+</p>
+
 # Kubernetes Ansible Deployment
 
-This Ansible project automates the deployment of a Kubernetes cluster using kubeadm with CRI-O as the container runtime. It provides a complete solution for setting up a production-ready Kubernetes cluster with Helm package manager.
+This Ansible project automates the deployment of a Kubernetes cluster using kubeadm with CRI-O as the container runtime.
 
 ## 📖 Blog Post
 **[[Kubernetes] 01. Creating Kubernetes Cluster
