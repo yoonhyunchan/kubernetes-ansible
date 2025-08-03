@@ -4,7 +4,7 @@ This Ansible project automates the deployment of a Kubernetes cluster using kube
 
 ## 📖 Blog Post
 **[[Kubernetes] 01. Creating Kubernetes Cluster
-](https://mon-roman.tistory.com/entry/Kubernetes-01-Creating-Kubernetes-Cluster)**
+](https://mon-roman.tistory.com/entry/Kubernetes-01-Creating-Kubernetes-Cluster)** - My Blog Post
 
 
 
