@@ -143,21 +143,6 @@ kubernetes_version: v1.32
 crio_version: v1.32
 ```
 
-## 📋 What Gets Installed
-
-### Container Runtime
-- **CRI-O**: Lightweight container runtime optimized for Kubernetes
-- Configured with the same version as Kubernetes
-
-### Kubernetes Components
-- **kubelet**: Node agent
-- **kubeadm**: Cluster bootstrapping tool
-- **kubectl**: Kubernetes command-line tool
-
-### Package Management
-- **Helm**: Kubernetes package manager
-- Optional Helm add-ons deployment
-
 ## 🔍 Verification
 
 After deployment, verify your cluster:
