@@ -6,11 +6,14 @@ This Ansible project automates the deployment of a Kubernetes cluster using kube
 **[[Kubernetes] 01. Creating Kubernetes Cluster
 ](https://mon-roman.tistory.com/entry/Kubernetes-01-Creating-Kubernetes-Cluster)**
 
-## 🏗️ Architecture
+
 
 - **Controller Node**: Single master node running the Kubernetes control plane
 - **Compute Nodes**: Multiple worker nodes for running workloads
 - **Management Node**: Separate node for cluster management and Helm operations
+
+### Infrastructure as Code
+**[Terraform Repository](https://github.com/yoonhyunchan/aws-terraform-project)** - Infrastructure setup for AWS EC2 instances, networking, and security groups required for the Kubernetes cluster deployment.
 
 ## 📋 Prerequisites
 
